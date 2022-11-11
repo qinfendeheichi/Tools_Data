@@ -25,3 +25,7 @@ We also chose to make some modification in org/pitest/testapi/execute/Pitest.jav
 
 
 Running mutation analysis with "FullMutationMatrix" and "Verbose" mode. The detailed test exceuction inforamtion can be directed to standard error.
+
+
+# Data
+Data1-5 and 6-10 have 10 csv files which contain test run information for all covered mutants labeled as "KILLED" or "SURVIVED" by PIT.
