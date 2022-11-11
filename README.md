@@ -12,85 +12,16 @@ mvn clean compile assembly:single test-compile
 
 change the probe info in visitMethodInsn method in Oraclevisitor to distinguish probes for source code from probes for test code.
 
-To instrument the project source code's bytecode
+To instrument the project source code's bytecode(for maven projects)
 
 ```
 java -jar "XXXX.jar" target/classes
 ```
 
-PIT configuration(change something in <scope> and <systemPath>
-```
-      <plugin>
-        <groupId>org.pitest</groupId>
-        <artifactId>pitest-maven</artifactId>
-        <version>1.8.0 </version>
-        <configuration>
-          <fullMutationMatrix>true</fullMutationMatrix>
-          <outputFormats>
-            <outputFormat>XML</outputFormat>
-            <outputFormat>HTML</outputFormat>
-          </outputFormats>
-          <exportLineCoverage>true</exportLineCoverage>
-          <!--We want each report to override the former one-->
-          <timestampedReports>false</timestampedReports>
-          <verbose>true</verbose>
-          <detail>true</detail>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>8</source>
-          <target>8</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.pitest</groupId>
-        <artifactId>pitest-maven</artifactId>
-        <!-- <version>LATEST</version> -->
-        <version>1.0.0-SNAPSHOT</version>
+# Modified PIT
 
-        <!--                <scope>system</scope>-->
-        <!--                <systemPath>/Users/superhang/Documents/ResearchExperiment/pitest-master/pitest/target/pitest-1.0.0-SNAPSHOT.jar</systemPath>-->
-        <dependencies>
-          <!--                    <dependency>-->
-          <!--                        <groupId>org.pitest</groupId>-->
-          <!--                        <artifactId>pitest-junit5-plugin</artifactId>-->
-          <!--                        &lt;!&ndash; <version>0.15</version> &ndash;&gt;-->
-          <!--                        <version>1.1.0</version>-->
-          <!--                    </dependency>-->
-          <dependency>
-            <groupId>org.pitest</groupId>
-            <artifactId>pitest</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-          </dependency>
-          <dependency>
-            <groupId>org.pitest</groupId>
-            <artifactId>pitest-entry</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-          </dependency>
-          <dependency>
-            <groupId>org.pitest</groupId>
-            <artifactId>pitest-html-report</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <verbose>true</verbose>
-          <failWhenNoMutations>false</failWhenNoMutations>
-          <timestampedReports>false</timestampedReports>
-          <fullMutationMatrix>true</fullMutationMatrix>
-          
-          <!-- <junit5PluginVersion>0.15</junit5PluginVersion> -->
-          <!--                    <junit5PluginVersion>1.1.0</junit5PluginVersion>-->
-          <!--                    &lt;!&ndash; <pitClasspath>pitest.path</pitClasspath> &ndash;&gt;-->
-          <!--                    <targetClasses>-->
-          <!--                        <param>org.jsoup.parser.CharacterReader</param>-->
-          <!--                    </targetClasses>-->
-          <!--                    &lt;!&ndash; <maxMutationsPerClass>10</maxMutationsPerClass> &ndash;&gt;-->
-          <!--                    <features>+CLASSLIMIT(limit[10])</features>-->
-        </configuration>
-      </plugin>
-```
+For PIT: We choose to report the exception type, lineNumber, FileName, and MethodName on the scene.
+We also chose to make some modification in org/pitest/testapi/execute/Pitest.java where we know the test start before it really starts in execution.
 
+
+Running mutation analysis with "FullMutationMatrix" and "Verbose" mode. The detailed test exceuction inforamtion can be directed to standard error.
