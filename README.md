@@ -29,3 +29,19 @@ Running mutation analysis with "FullMutationMatrix" and "Verbose" mode. The deta
 
 # Data
 Data1-5 and 6-10 have 10 csv files which contain test run information for all covered mutants labeled as "KILLED" or "SURVIVED" by PIT.
+
+Each line has such fields:
+[’mutation_id','mutated_file','mutated_line_number',"mutator","mutation_state",’test_id',"test_state","exception","cause","loc"]
+
+1. “mutation_id” is a unique mutation id for each project, they are given orderly and meaningless  
+2. “mutated_file”, ‘mutated_line_number”,”mutator”: describes the mutation  
+3. “mutation_state” can be: [“killed”, “survive”, “killed(noResource)”,”extra”]      
+ "extra means the mutations that our probes introduce to the project for mutants that are killed due to occupying too much resources, no tests information is available
+4. “test_id”: uniquely describes a test in a project “test_state”: [“pass”, “fail”]
+
+5. if a test pass, the last three fields are None, otherwise:
+	“exception”: the exception type 
+	“cause”: [“exogenous_crash”, “source_oracle”, “test_oracle”]
+	“loc”: the description of the immediate stack information
+
+Note: some Exceptions have empty stack trace, so the info in incomplete in “loc”, such as some java.lang.OutofMemoryError
